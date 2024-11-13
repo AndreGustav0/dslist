@@ -13,20 +13,23 @@ public class Game {
     private Long id;
     private String titulo;
     private Integer ano;
+    private String genero;
     private String plataforma;
     private Double nota;
     private String imgUrl;
 
+    @Column(columnDefinition = "TEXT") //Altera o modelo no b.d pois ultrapassa 255 caracteres.
     private String descricaoCurta;
-
+    @Column(columnDefinition = "TEXT")
     private String descricaoLonga;
 
     public Game (){ }
 
-    public Game(Long id, String titulo, Integer ano, String plataforma, Double nota, String imgUrl, String descricaoCurta, String descricaoLonga) {
+    public Game(Long id, String titulo, Integer ano,String genero, String plataforma, Double nota, String imgUrl, String descricaoCurta, String descricaoLonga) {
         this.id = id;
         this.titulo = titulo;
         this.ano = ano;
+        this.genero = genero;
         this.plataforma = plataforma;
         this.nota = nota;
         this.imgUrl = imgUrl;
@@ -56,6 +59,14 @@ public class Game {
 
     public void setAno(Integer ano) {
         this.ano = ano;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 
     public String getPlataforma() {
