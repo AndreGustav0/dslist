@@ -1,6 +1,5 @@
 package com.devsuperior.dslist.controllers;
 
-import com.devsuperior.dslist.Entities.Game;
 import com.devsuperior.dslist.dto.GameDTO;
 import com.devsuperior.dslist.dto.GameMiniDTO;
 import com.devsuperior.dslist.services.GameService;

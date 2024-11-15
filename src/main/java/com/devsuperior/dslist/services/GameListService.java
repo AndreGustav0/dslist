@@ -1,10 +1,8 @@
 package com.devsuperior.dslist.services;
 
-import com.devsuperior.dslist.Entities.Game;
-import com.devsuperior.dslist.Entities.GameList;
-import com.devsuperior.dslist.dto.GameDTO;
+import com.devsuperior.dslist.entities.GameList;
 import com.devsuperior.dslist.dto.GameListDTO;
-import com.devsuperior.dslist.dto.GameMiniDTO;
+import com.devsuperior.dslist.projections.GameMinProjection;
 import com.devsuperior.dslist.repositories.GameListRepository;
 import com.devsuperior.dslist.repositories.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +17,28 @@ public class GameListService {
     @Autowired
     private GameListRepository gameListRepository;
 
+    @Autowired
+    private GameRepository gameRepository;
+
 
     @Transactional(readOnly = true)
     public List<GameListDTO> findAll() {
         List<GameList> result = gameListRepository.findAll();
         return result.stream().map(x -> new GameListDTO(x)).toList();
+    }
+
+    @Transactional(readOnly = true)
+    public void move(Long listId, int posicaoOrigem, int posicaoDestino) {
+        // lógica cabulosa
+        List<GameMinProjection> list = gameRepository.searchByList(listId);
+        GameMinProjection obj = list.remove(posicaoOrigem);
+        list.add(posicaoDestino, obj);
+        int min = posicaoOrigem < posicaoDestino ? posicaoOrigem : posicaoDestino;
+        int max = posicaoOrigem < posicaoDestino ? posicaoDestino : posicaoOrigem;
+
+        for (int i = min; i <= max; i++) {
+            gameListRepository.updateBelongingPosition(listId, list.get(i).getId(), i);
+        }
     }
 
 }
